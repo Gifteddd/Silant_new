@@ -8,7 +8,7 @@ const LoginForm = () => {
     const current_user = useSelector(state => state.current_user)
     const username_form = useRef()
     const password_form = useRef()
-    const remember_user = useRef()
+    const remember_user = useRef(true)
 
     const show_auth_info = (show, text) => {
         dispatch({type: "SHOW_INFO", payload: {show: show, text: text}})
@@ -19,7 +19,7 @@ const LoginForm = () => {
         let login = await MainAPI.login(username_form.current.value, password_form.current.value)
         if (login.authenticated) {
             dispatch({type: "AUTHORISATION_SUCCESS", payload: login})
-            if (remember_user.current.checked) {
+            if (remember_user.current) {
                 localStorage.setItem('current_user', JSON.stringify(login))
             }
             setTimeout(() => dispatch({type: "SHOW_AUTH_MODAL"}), 1000)
